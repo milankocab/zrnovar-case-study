@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stálá objednávka pro B2B zákazníky</title>
+<!-- Tisk do PDF v Chromu: Ctrl/Cmd + P, Cíl „Uložit jako PDF“, Okraje „Výchozí“, zapnout „Grafika na pozadí“. -->
+<style>
+  :root {
+    --ink: #1c1b19;
+    --muted: #6b665e;
+    --line: #e4dfd6;
+    --soft: #f6f3ee;
+    --accent: #7a4a24;
+    --must: #7a4a24;
+    --should: #4f6b52;
+    --could: #6b665e;
+  }
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font: 10.5pt/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { max-width: 178mm; margin: 0 auto; padding: 16px; }
+  @media screen {
+    body { background: #ece8e1; }
+    main { background: #fff; margin: 24px auto; padding: 18mm 16mm; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+  }
+  h1 { font-size: 22pt; line-height: 1.15; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .meta { color: var(--muted); font-size: 9.5pt; margin: 0 0 18px; padding-bottom: 12px; border-bottom: 2px solid var(--accent); }
+  h2 { font-size: 14pt; margin: 22px 0 8px; color: var(--accent); break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 16px 0 6px; break-after: avoid; }
+  h3.story { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .us { font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 600; }
+  .prio { font-size: 8pt; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; padding: 1px 6px; border-radius: 3px; color: #fff; }
+  .prio-must { background: var(--must); }
+  .prio-should { background: var(--should); }
+  .prio-could { background: var(--could); }
+  p { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 10px; padding-left: 20px; }
+  li { margin: 0 0 3px; }
+  code { font: 9pt/1 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--soft); padding: 1px 4px; border-radius: 3px; }
+  a { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 14px; font-size: 9.5pt; break-inside: auto; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  th, td { text-align: left; vertical-align: top; padding: 5px 7px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; }
+  .note { background: var(--soft); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; break-inside: avoid; }
+  .note p:last-child, .note ul:last-child { margin-bottom: 0; }
+  @media (max-width: 640px) {
+    main { padding: 16px; margin: 0; }
+    table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>Stálá objednávka pro B2B zákazníky</h1>
+<p class="meta">Zrnovar (testovací obchod na Shopify) · Milan Kocáb, Product Owner · verze 1.1 k připomínkám · 6. 10. 2026</p>
+<h2>1. Kontext a problém</h2>
+<p>Kavárny objednávají u Zrnovaru přes Shopify B2B každý týden skoro totéž. Kavárna U Mostu bere každé pondělí zhruba 12 kg espresso směsi, 2 kg filtrové kávy a čisticí tablety.</p>
+<p><strong>Co dnes kavárnu i Zrnovar trápí:</strong></p>
+<ul><li><strong>Objednávka zabere zbytečně čas.</strong> Kavárna ji pokaždé skládá znovu z katalogu a musí si pamatovat, co brala minule.</li><li><strong>Buy again není dostatečný.</strong> Kopíruje konkrétní minulou objednávku, ale požadovaná objednávka může být někde v dávné minulosti.</li><li><strong>Kavárna zapomíná objednat.</strong> Kávu pak doobjednává telefonem a obchodník řeší expresní dodání. Zrnovar se o výpadku dozví pozdě, nebo vůbec, pokud kavárna mezitím nakoupí jinde.</li></ul>
+<p><strong>Navrhujeme stálou objednávku.</strong> Kavárna si jednou uloží, co obvykle bere, a objedná to jedním kliknutím nahoře na stránce Objednávky. V nastavený den jí přijde připomínka s odkazem. Obchodník Zrnovaru dostane upozornění, když kavárna po připomínce neobjedná.</p>
+<h2>2. Cíle</h2>
+<ul><li><strong>Kavárna</strong> objedná obvyklé zboží rychle a bez chyb.</li><li><strong>Zrnovar</strong> má pravidelné a předvídatelné B2B tržby, méně expresních dodání po zapomenuté objednávce a včas pozná zákazníka, který přestal objednávat, dřív než odejde ke konkurenci.</li></ul>
+<p><strong>Cíl (SMART).</strong> Do 3 měsíců od spuštění bude alespoň 30 % B2B objednávek pocházet ze stálé objednávky (štítek <code>standing-order</code>). Hodnotu 30 % potvrdíme s klientem.</p>
+<p><strong>Měření.</strong></p>
+<ul><li><strong>Využití.</strong> Objednávky ze stálé objednávky dostanou štítek <code>standing-order</code>. Jejich počet uvidíme v adminu filtrem objednávek podle štítku.</li><li><strong>Úspěšnost připomínek.</strong> Otevření a prokliky ukáže nástroj, který připomínky posílá (marketingová automatizace Shopify nebo Klaviyo). Lokace, které po připomínce neobjednaly, zachytí Flow pro upozornění obchodníka (kapitola 4.1).</li><li><strong>Rychlost objednání</strong> Shopify nezměří, proto ji v této fázi nesledujeme.</li></ul>
+<aside class="note"><p><strong>Otázka pro vývoj:</strong> Jde v Shopify Analytics vytvořit report s podílem objednávek se štítkem <code>standing-order</code> na všech B2B objednávkách? Pokud ne, budeme podíl počítat ručně z filtru.</p></aside>
+<h2>3. User stories</h2>
+<p><strong>Jak to bude fungovat:</strong></p>
+<ol><li>Provozní vybere libovolnou objednávku z historie lokace, uloží ji jako stálou objednávku a upraví množství. Pokud lokace objednává opakovaně stejné produkty, systém jí vytvoření stálé objednávky sám nabídne.</li><li>Stálá objednávka patří <strong>k lokaci firmy, ne k uživateli</strong>. Uživatel s rolí Ordering only vidí jen své objednávky, takže by jinak stálou objednávku založenou manažerem neviděl.</li><li>V nastavený den přijde kontaktům lokace e-mail s tlačítkem Zobrazit a objednat.</li><li>Baristka klikne Objednat, vytvoří se košík s aktuálními cenami katalogu a otevře se checkout.</li><li>Zrnovar vidí, které objednávky přišly ze stálé objednávky. Když kavárna po připomínce neobjedná, obchodník dostane upozornění.</li></ol>
+<p><strong>Kdo s tím pracuje:</strong></p>
+<ul><li><strong>Baristka nebo provozní</strong> objednává mezi směnami, často z mobilu. Chce mít hotovo do minuty.</li><li><strong>Majitel nebo manažer</strong> chce vědět, co se objednává, ale nechce schvalovat každou objednávku kávy.</li><li><strong>Obchodník Zrnovaru</strong> potřebuje vědět, když kavárna neobjednala, aby mohl zavolat včas.</li></ul>
+<p><strong>Priority (MoSCoW)</strong> určují rozsah první verze, na kterém se domluvíme s klientem. <strong>Must</strong> je podmínka spuštění, bez ní funkci nenasadíme. <strong>Should</strong> patří do první verze, pokud to odhad dovolí. <strong>Could</strong> uděláme, jen když zbude kapacita, jinak jde do další fáze.</p>
+<h3 class="story"><span class="us">US-1</span> Objednat jedním kliknutím z horní části stránky Objednávky <span class="prio prio-must">Must</span></h3>
+<p>Jako baristka chci hned po otevření Objednávek vidět naše stálé objednávky a jednu objednat, abych nemusela nic hledat ani skládat.</p>
+<ol><li>Nad seznamem objednávek je blok Stálé objednávky s názvem, počtem položek a orientační cenou podle aktuálního katalogu.</li><li>Objednat vytvoří košík v kontextu lokace a otevře checkout. Ceny, minima a platební podmínky odpovídají B2B nastavení lokace.</li><li>Objednávka je označená jako objednávka ze stálé objednávky (kvůli měření).</li><li>Pokud lokace stálou objednávku nemá, blok nabídne Vytvořit stálou objednávku.</li><li>Na mobilu je tlačítko Objednat vidět bez posouvání.</li></ol>
+<h3 class="story"><span class="us">US-2</span> Vytvořit stálou objednávku z historie objednávek <span class="prio prio-must">Must</span></h3>
+<p>Jako provozní chci stálou objednávku vytvořit z kterékoli dřívější objednávky, abych ji nemusela skládat znovu, i když poslední objednávka byla jednorázová.</p>
+<ol><li>Tlačítko Vytvořit stálou objednávku (v bloku i na stránce Stálé objednávky) otevře seznam objednávek lokace s datem, počtem položek a cenou. Vyberu kteroukoli.</li><li>Stejnou akci Uložit jako stálou objednávku mám i v detailu objednávky.</li><li>Zadám název (předvyplněno „Týdenní objednávka“), upravím množství nebo položky odeberu.</li><li>Stálá objednávka patří k lokaci původní objednávky a vidí ji všechny kontakty lokace.</li><li>Položky, které už nejsou v katalogu lokace, se nepřenesou a uživatel o tom dostane zprávu.</li></ol>
+<h3 class="story"><span class="us">US-3</span> Upravit a smazat stálou objednávku <span class="prio prio-must">Must</span></h3>
+<p>Jako provozní chci stálou objednávku upravit nebo smazat, abych ji udržela aktuální, když se změní naše spotřeba.</p>
+<p><strong>Co lze upravit:</strong></p>
+<ul><li><strong>Množství položky</strong>, například z 12 kg na 18 kg, když kavárna začne prodávat víc kávy.</li><li><strong>Odebrání položky</strong>, například když kavárna přestane brát filtrovou kávu.</li><li><strong>Název</strong>, například „Pondělní káva“ místo „Týdenní objednávka“.</li></ul>
+<p><strong>Co upravit nelze:</strong></p>
+<ul><li><strong>Přidat nový produkt.</strong> K tomu je potřeba vyhledávání v katalogu, které je v US-7 (Could). Do té doby se nový produkt dostane do stálé objednávky vytvořením nové stálé objednávky z novější objednávky (US-2).</li><li><strong>Změnit lokaci.</strong> Stálá objednávka patří natrvalo k lokaci, ve které vznikla.</li><li><strong>Nastavit připomínku.</strong> To řeší US-4.</li></ul>
+<p><strong>Akceptační kritéria:</strong></p>
+<ol><li>Úpravy jsou na stránce Stálé objednávky v zákaznickém účtu, ve stejném formuláři jako při vytvoření (US-2).</li><li>Množství musí splnit pravidla katalogu, jinak uložení nejde a zobrazí se povolené množství.</li><li>Pokud se pravidla změní a položka je nesplňuje, zobrazí se „Minimum je nyní 12 kg, máte 6 kg“ a tlačítko Upravit na 12. Tlačítko změní uloženou stálou objednávku. Množství se nikdy nemění automaticky, protože jde o vyšší cenu. Dokud položka pravidla nesplní, stálou objednávku nejde objednat.</li><li>Odebrat nejde poslední položku. Stálá objednávka bez položek se místo toho smaže.</li><li>Je vidět, kdo a kdy naposledy upravoval. Při souběžné úpravě platí poslední uložení.</li><li>Smazání vyžaduje potvrzení. Lokace má nejvýše 5 stálých objednávek.</li></ol>
+<h3 class="story"><span class="us">US-4</span> Nastavit týdenní připomínku <span class="prio prio-must">Must</span></h3>
+<p>Jako provozní chci zvolit den a čas připomínky, aby mi objednávka nevypadla z hlavy.</p>
+<ol><li>Připomínku zapnu, vypnu (např. na dovolenou) a zvolím den a čas. Výchozí je pondělí 8.00, Europe/Prague.</li><li>Připomínka přijde jen kontaktům lokace se souhlasem s e-mailovou komunikací.</li><li>E-mail obsahuje obecný text a tlačítko Zobrazit a objednat.</li><li>Název a položky stálé objednávky e-mail ukáže jen tehdy, pokud to zvolený způsob odesílání umí (ověří spike). Upozornění na nesplněné minimum nebo vyprodané zboží uživatel uvidí až po kliknutí na stálé objednávce (US-3, bod 3).</li></ol>
+<h3 class="story"><span class="us">US-5</span> Odkaz z připomínky vede rovnou na stálou objednávku <span class="prio prio-must">Must</span></h3>
+<p>Jako baristka chci z e-mailu kliknout a hned objednat.</p>
+<ol><li>Přihlášenému se otevře stránka Stálé objednávky s danou objednávkou nahoře. Nepřihlášený se po přihlášení vrátí na stejné místo.</li><li>Odkaz neobsahuje citlivé údaje a bez přihlášení a přístupu k lokaci nic neukáže.</li></ol>
+<h3 class="story"><span class="us">US-6</span> Nabídnout stálou objednávku při opakované objednávce <span class="prio prio-should">Should</span></h3>
+<p>Jako provozní chci, aby mi systém sám nabídl uložení objednávky, kterou dělám pravidelně, abych na to nemusela myslet.</p>
+<ol><li>Nabídka se zobrazí, pokud má lokace aspoň 2 objednávky se stejnou sadou produktů. Množství se neporovnává, jednorázová položka navíc shodu ruší.</li><li>Nezobrazí se, pokud lokace už má stálou objednávku se stejnými produkty.</li><li>Tlačítko otevře vytvoření stálé objednávky předvyplněné z aktuální objednávky.</li><li>Kde se nabídka zobrazí, rozhodneme podle odpovědi vývoje (kapitola 4.2).</li></ol>
+<h3 class="story"><span class="us">US-7</span> Přidat produkt a vytvořit stálou objednávku od nuly <span class="prio prio-could">Could</span></h3>
+<p>Jako provozní chci do stálé objednávky přidat nový produkt nebo ji založit bez minulé objednávky.</p>
+<ol><li>Vyhledám produkt podle názvu nebo SKU. Nabídnou se jen varianty z katalogu lokace.</li><li>Platí pravidla množství jako v US-3.</li><li>Dokud tato story není hotová, nový produkt do stálé objednávky dostanu tak, že ji vytvořím znovu z novější objednávky (US-2).</li></ol>
+<h3 class="story"><span class="us">US-8</span> Obchodník vidí stálé objednávky zákazníka <span class="prio prio-could">Could</span></h3>
+<p>Jako obchodník chci u firmy v adminu vidět její stálé objednávky, abych věděl, co a jak často bere.</p>
+<h3>Okrajové případy (platí pro všechny stories)</h3>
+<table><thead><tr><th>Situace</th><th>Chování</th></tr></thead><tbody><tr><td>Položka není skladem</td><td>Označí se, uživatel zvolí Objednat bez ní. Stálá objednávka se nemění, příště se položka objedná znovu. Neplatí, pokud Zrnovar povolí prodej bez zásob.</td></tr><tr><td>Skladem je jen část (chce 12 kg, je 6 kg)</td><td>Nabídne se dostupné množství, pokud splňuje minimum. Jinak jako řádek výš.</td></tr><tr><td>Položka mimo katalog nebo smazaná</td><td>Označí se jako nedostupná, do košíku se nepřidá a nabídne se odebrání ze stálé objednávky.</td></tr><tr><td>Žádná položka není dostupná</td><td>Tlačítko Objednat je neaktivní s vysvětlením.</td></tr><tr><td>Změna ceny</td><td>Ceny se neukládají, vždy platí aktuální katalog.</td></tr><tr><td>Změna pravidel množství</td><td>Viz US-3, bod 3.</td></tr><tr><td>Firma má víc lokací</td><td>Uživatel vidí stálé objednávky lokace, za kterou právě nakupuje.</td></tr></tbody></table>
+<h2>4. Řešení</h2>
+<h3>4.1 Co Shopify umí a jak to využijeme</h3>
+<p>Bez vývoje, jen nastavením:</p>
+<table><thead><tr><th>Potřeba</th><th>Řešení v Shopify</th><th>Stav</th></tr></thead><tbody><tr><td>Velkoobchodní ceny</td><td>B2B katalog Velkoobchod Gastro (−15 %)</td><td>hotovo</td></tr><tr><td>Minimální odběr 6 kg, množstevní ceny od 12 a 24 kg</td><td>pravidla množství v katalogu, checkout je vynutí</td><td>hotovo</td></tr><tr><td>Platba na fakturu</td><td>platební podmínky Net 30</td><td>hotovo</td></tr><tr><td>Kontrola objednávky obchodníkem (pokud ji klient bude chtít)</td><td>objednávky lokace chodí jako koncept</td><td>dle potřeby</td></tr><tr><td>Označení objednávek ze stálé objednávky</td><td>Flow: Order created → má atribut <code>source: standing-order</code> → štítek <code>standing-order</code></td><td>nastavit</td></tr><tr><td>Upozornění obchodníka, že kavárna neobjednala</td><td>Flow: denně v 15.00 najde lokace, kterým před 48 h odešla připomínka a od té doby nepřišla žádná objednávka (ani ruční), a pošle interní e-mail</td><td>nastavit, ověřit čtení metaobjektů</td></tr><tr><td>Týdenní připomínka zákazníkovi</td><td>marketingová automatizace Shopify (Flow e-mail zákazníkovi poslat neumí)</td><td>ověřit, záložně Klaviyo nebo vlastní aplikace</td></tr><tr><td>Upozornění na docházející zboží</td><td>Flow: e-mail při poklesu zásob na 10 ks</td><td>hotovo</td></tr><tr><td>Prodej i bez zásob (vyprodání se kavárny netýká, dodá se později)</td><td>u produktu povolit „pokračovat v prodeji, když není skladem“</td><td>rozhodne Zrnovar (otázka 5)</td></tr></tbody></table>
+<h3>4.2 Co vytvoříme</h3>
+<p>Shopify nemá uloženou šablonu objednávky. Buy again umí objednávku zopakovat, ale zákazník ji musí nejdřív dohledat v historii, a na to často nemá čas ani chuť. Stálá objednávka mu dá na jednom místě přehled o tom, co pravidelně objednává. Hotová aplikace z App Store naše požadavky nesplňuje, proto stálou objednávku vyvineme jako vlastní aplikaci.</p>
+<p><strong>Návrh technického řešení</strong> (finální podobu určí vývoj):</p>
+<ul><li>Data: metaobjekt <code>standing_order</code> s odkazem na <code>company_location</code>, položkami (<code>variant_id</code>, <code>quantity</code>), nastavením připomínky, <code>last_reminder_sent_at</code> a <code>updated_by</code>. Obchodník ho vidí v adminu bez další aplikace.</li><li>UI: Customer Account UI Extensions. Blok na stránce Objednávky (<code>customer-account.order-index.block.render</code>), akce v detailu objednávky (<code>customer-account.order.action.*</code>), stránka Stálé objednávky (<code>customer-account.page.render</code>).</li><li>Košík: Storefront API <code>cartCreate</code> s <code>buyerIdentity.companyLocationId</code> a atributem <code>source: standing-order</code>, záložně cart permalink.</li></ul>
+<aside class="note"><p><strong>Otázka pro vývoj (US-6):</strong> Klient si představuje, že nabídku „Uložit jako stálou objednávku“ dostane v e-mailu s potvrzením objednávky, pokud lokace už má v historii objednávku se stejnou sadou produktů. Vidí šablona potvrzení historii objednávek lokace v okamžiku odeslání? Pokud ne, navrhneme klientovi jednu z variant:</p><ul><li><strong>A) Samostatný e-mail po objednávce</strong> (marketingová automatizace nebo Klaviyo) s tlačítkem na předvyplněnou stálou objednávku.</li><li><strong>B) Nabídka v bloku na stránce Objednávky:</strong> „Tuhle objednávku jste udělali už 2×. Uložit jako stálou?“ Blok historii vidí, takže je to jistě proveditelné.</li></ul><p>Která varianta je proveditelná a levnější? A jde nabídku ukázat i na stránce potvrzení objednávky (Thank you page) hned po checkoutu?</p></aside>
+<h2>5. Mimo rozsah a nápady na další fáze</h2>
+<ul><li><strong>Plně automatická objednávka bez kliknutí.</strong> Rizika s platbou, zásobami a stornem (zavřeno, jiná spotřeba). Připomínka dá většinu užitku bez nich.</li><li><strong>Schvalování manažerem.</strong> Zpomaluje rutinní nákup a šlo by obejít ruční objednávkou. Pokud kontrolu klient chce, použije koncepty objednávek (kapitola 4.1).</li><li>Založení stálé objednávky obchodníkem za zákazníka.</li><li>Sdílení stálé objednávky mezi lokacemi, synchronizace s ERP, B2C zákazníci.</li></ul>
+<h2>6. Navrhovaný postup a odhad</h2>
+<p>Postup navrhuji jako Product Owner. Je potřeba doplnit odhady od vývoje.</p>
+<table><thead><tr><th>Krok</th><th>Obsah</th><th>Připomínky vývoje</th><th>Odhad (MD)</th></tr></thead><tbody><tr><td>1</td><td>Spike: zápis metaobjektu z rozšíření, B2B košík pro lokaci, čtení metaobjektů ve Flow, odeslání připomínky kontaktům lokace a zda e-mail může zobrazit název a položky stálé objednávky</td><td></td><td></td></tr><tr><td>2</td><td>Nastavení v adminu a Flow (kapitola 4.1)</td><td></td><td></td></tr><tr><td>3</td><td>US-1, US-2, US-3, US-5</td><td></td><td></td></tr><tr><td>4</td><td>US-4 a připomínka</td><td></td><td></td></tr><tr><td>5</td><td>US-6</td><td></td><td></td></tr><tr><td>6</td><td>US-7, US-8</td><td></td><td></td></tr><tr><td>7</td><td>Testování a akceptace s klientem</td><td></td><td></td></tr></tbody></table>
+<h2>7. Otevřené otázky pro klienta</h2>
+<ol><li><strong>Souhlas s e-maily.</strong> Potřebuje týdenní připomínka souhlas s obchodními sděleními, nebo stačí možnost odhlášení? Potvrdí právník klienta.</li><li><strong>Upozornění obchodníka.</strong> Je 48 hodin správná doba? Chodí jednomu obchodníkovi, nebo tomu přiřazenému k firmě?</li><li><strong>Limit.</strong> Stačí 5 stálých objednávek na lokaci?</li><li><strong>Jazyk.</strong> Jen čeština, nebo i angličtina?</li><li><strong>Prodej bez zásob.</strong> Chce Zrnovar u kávy povolit prodej, i když není skladem, a dodat později? Kavárna pak stálou objednávku objedná vždy celou.</li></ol>
+
+</main>
+</body>
+</html>
