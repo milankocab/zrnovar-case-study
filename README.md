@@ -1,5 +1,5 @@
 # Zrnovar · case study e-shopu na Shopify (B2C a B2B)
-Ing. Milan Kocáb · Product Owner / Project Manager · Praha
+Ing. Milan Kocáb · Product Owner · Praha
 
 Testovací e-shop fiktivní pražírny kávy Zrnovar. Ukazuji na něm, co v Shopify nastavím sám, kdy sáhnu po aplikaci, kdy je potřeba vlastní vývoj a jak píšu zadání pro vývojáře.
 
